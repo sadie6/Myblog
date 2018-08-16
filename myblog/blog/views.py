@@ -257,4 +257,8 @@ def digit(request):
 
 
 def qx(request):
-	return render(request,'meigui.html')
+	about_obj = models.User.objects.get(id=1)
+	image_obj = models.Image.objects.all().order_by('?')[:6]
+	category_obj = models.Category.objects.annotate(num_pro=Count('article'))
+	article_obj = models.Article.objects.all().order_by('?')[:6]
+	return render(request,'meigui.html',{'about':about_obj,'image':image_obj,'category':category_obj,'article':article_obj})
