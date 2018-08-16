@@ -1,0 +1,36 @@
+{% load static %}
+
+      
+      <div class="search">
+        <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+          <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+          <input name="show" value="title" type="hidden">
+          <input name="tempid" value="1" type="hidden">
+          <input name="tbname" value="news" type="hidden">
+          <input name="Submit" class="input_submit" value="搜索" type="submit">
+        </form>
+      </div>
+      <div class="fenlei">
+        <h2>文章分类</h2>
+        <ul>
+          {% for c in category %}
+          <li><a href="/blog/list/{{ c.id }}">{{ c.name }}({{c.num_pro}})</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="tuijian">
+        <h2>站长推荐</h2>
+        <ul>
+          {% for a in article %}
+          <li><a href="/blog/info/{{ a.id }}">{{ a.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+     <!--  <div class="links">
+        <h2>友情链接</h2>
+        <ul>
+          <a href="http://www.yangqq.com">杨青个人博客</a> <a href="http://www.yangqq.com">杨青博客</a>
+        </ul>
+      </div> -->
+      
+  

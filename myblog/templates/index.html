@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<article>
+  <aside class="l_box">
+  {% include 'left1.html'%}
+  {% include 'left2.html' %}
+  </aside>
+  <main class="r_box">
+    {% for a in article2 %}
+    <li><i><a href="/blog/info/{{ a.id }}"><img src="{{ a.img }}"></a></i>
+      <h3><a href="/blog/info/{{ a.id }}">{{ a.title }}</a></h3>
+      <p>{{ a.content | slice:"100" }}</p>
+    </li>
+    {% endfor %}
+  </main>
+</article>
+{% endblock %}

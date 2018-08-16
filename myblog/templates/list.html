@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+<script type="text/javascript" src="{% static 'js/hc-sticky.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<article>
+  <aside class="l_box">
+  <!-- {% include 'left1.html' %} -->
+  {% include 'left2.html' %}
+  {% include 'left3.html' %}
+
+    
+  </aside>
+  <main class="r_box">
+    {% for a in article3 %}
+    <li><i><a href="/blog/info/{{ a.id }}"><img src="{{ a.img }}"></a></i>
+      <h3><a href="/blog/info/{{ a.id }}">{{ a.title }}</a></h3>
+      <p>{{ a.content | slice:"100" }}</p>
+    </li>
+    {% endfor %}
+    <div class="pagelist">{{ page_str }}</div>
+  </main>
+</article>
+{% endblock %}

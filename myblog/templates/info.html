@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+<link href="{% static 'css/info.css' %}" rel="stylesheet">
+<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+<script type="text/javascript">
+$(function(){
+ 
+   $("#ajax_submit").click(function(){
+     $.ajax({
+      url:'/blog/comment',
+      type:'POST',
+      data:{'username':$("#username").val(),'pwd':$("#pwd").val(),'content':$("#saytext").val(),'aid':$("#aid").val()},
+      // dataType:'JSON',
+      traditional:true,
+      headers:{'X-CSRFtoken':$.cookie('csrftoken')},
+      success:function(data){
+        if(data == "ok"){
+          location.reload()
+        }
+        else{
+          alert(data)
+        }
+
+      }
+    });
+  });
+ 
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
+<article>
+  <aside class="l_box">
+    {% include 'left2.html' %}
+    {% include 'left3.html' %}
+  </aside>
+  <main>
+    <div class="infosbox">
+      <div class="newsview">
+        <h3 class="news_title">{{ article3.title }}</h3>
+        <div class="bloginfo">
+          <ul>
+            <li class="author">作者：<a href="/">范召萱</a></li>
+            <li class="lmname"><a href="/">类别：{{ article3.category.name }}</a></li>
+            <li class="timer">时间：{{ article3.createtime }}</li>
+            <li class="timer">最近更新时间：{{ article3.updatetime }}</li>
+
+            <li class="view">{{ article3.count }}人已阅读</li>
+          </ul>
+        </div>
+        <div class="tags"><a href="/" target="_blank">个人博客</a> &nbsp; <a href="/" target="_blank">小世界</a></div>
+        
+        <div class="news_con"> 
+          {{ article3.content }}
+        </div>
+      </div>
+      <div class="share">
+        <p class="diggit"><a href="/blog/digit/?aid={{ article3.id }}"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ article3.like }}</b>)</p>
+      </div>
+      <div class="nextinfo">
+        <p>上一篇：<a href="/news/life/2018-03-13/804.html">作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</a></p>
+        <p>下一篇：<a href="/news/life/">返回列表</a></p>
+      </div>
+      <div class="news_pl">
+        <h2>文章评论</h2>
+        <div class="gbko"> 
+          <script src="/e/pl/more/?classid=77&amp;id=106&amp;num=20"></script>
+          {% for c in comment %}
+          <div class="fb">
+            <ul>
+              <p class="fbtime"><span>{{ c.time }}</span>{{ c.userId.username }}</p>
+              <p class="fbinfo">{{ c.content }}</p>
+            </ul>
+          </div>
+          {% endfor %}
+          <!-- <div class="fb">
+            <ul>
+              <p class="fbtime"><span>2018-07-24 08:52:48</span> 卜野</p>
+              <p class="fbinfo"></p>
+              <div class="ecomment"><span class="ecommentauthor">网友 家蚂蚁 的原文：</span>
+                <p class="ecommenttext">坚持哟!看你每天都有写，请继续加油，再接再厉哦</p>
+              </div>
+            </ul>
+          </div> -->
+          
+          <script>
+      function CheckPl(obj)
+      {
+      if(obj.saytext.value=="")
+      {
+      alert("您没什么话要说吗？");
+      obj.saytext.focus();
+      return false;
+      }
+      return true;
+      }
+      </script>
+          <form action="/blog/comment" method="post" name="saypl" id="saypl" onsubmit="return CheckPl(document.saypl)" target='ifm'>
+            {% csrf_token %}
+
+            <div id="plpost">
+              <p class="saying"><span><a href="/e/pl/?classid=77&amp;id=106">共有<script type="text/javascript" src="/e/public/ViewClick/?classid=77&amp;id=106&amp;down=2"></script>{{ comment_count }}条评论</a></span>来说两句吧...</p>
+              <p class="yname" ><span>用户名:</span>
+                <input name="username" type="text" class="inputText" id="username" value="" size="16">
+              </p>
+              <p class="yzm" ><span>验证码:</span>
+                <input name="pwd" type="text" class="inputText" size="16" id="pwd">
+              </p>
+              <input type="hidden" value={{ article3.id }} name='aid' id="aid">
+              <input name="nomember" type="hidden" id="nomember" value="1" checked="checked">
+              <textarea name="content" rows="6" id="saytext"></textarea>
+              <input name="imageField"    type="submit" value="提交">
+              <input name="id" type="hidden" id="id" value="106">
+              <input name="classid" type="hidden" id="classid" value="77">
+              <input name="enews" type="hidden" id="enews" value="AddPl">
+              <input name="repid" type="hidden" id="repid" value="0">
+              <input type="hidden" name="ecmsfrom" value="/joke/talk/2018-07-23/106.html">
+              <!-- <a id='ajax_submit' type='hidden'>qiaoqiaotijiao1</a> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</article>
+
+{% endblock %}

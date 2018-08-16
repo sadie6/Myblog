@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block link %}
+<link href="{% static 'css/infopic.css' %}" rel="stylesheet">
+<script src="{% static 'js/piccontent.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'js/hc-sticky.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<article>
+  <aside class="l_box">
+    {% include 'left1.html' %}
+    {% include 'left2.html' %}
+  </aside>
+  <main>
+  <div class="picsbox">
+    <div class="bodymodal"></div>
+    <!--播放到第一张图的提示-->
+    <div class="firsttop">
+      <div class="firsttop_right">
+        <div class="close2"> <a class="closebtn1" title="关闭" href="javascript:void(0)"></a> </div>
+        <div class="replay">
+          <h2 id="div-end-h2"> 已到第一张图片了。 </h2>
+          <p> <a class="replaybtn1" href="javascript:;">重新播放</a> </p>
+        </div>
+      </div>
+    </div>
+    <!--播放到最后一张图的提示-->
+    <div class="endtop">
+      <div class="firsttop_right">
+        <div class="close2"> <a class="closebtn2" title="关闭" href="javascript:void(0)"></a> </div>
+        <div class="replay">
+          <h2 id="H1"> 已到最后一张图片了。 </h2>
+          <p> <a class="replaybtn2" href="javascript:;">重新播放</a> </p>
+        </div>
+      </div>
+    </div>
+    <!--弹出层结束--> 
+    <!--图片特效内容开始-->
+    <div class="piccontext">
+      <h2> {{ category2.name }} </h2>
+      <div class="source">
+        <div class="source_left"><span>2018-5-7</span> </div>
+        <div class="source_right"> <a href="javascript:;" class="list">列表查看</a> </div>
+        <div class="source_right1"> <a href="javascript:;" class="gaoqing">高清查看</a> </div>
+      </div>
+      <!--大图展示-->
+      <div class="picshow">
+        <div class="picshowtop"> <a href="#"><img src="" alt="" id="pic1" curindex="0" /></a> <a id="preArrow" href="javascript:void(0)" class="contextDiv" title="上一张"><span id="preArrow_A"></span></a> <a id="nextArrow" href="javascript:void(0)" class="contextDiv" title="下一张"><span id="nextArrow_A"></span></a> </div>
+        <div class="picshowtxt">
+          <div class="picshowtxt_left"><span>1</span>/<i>{{len}}</i></div>
+          <div class="picshowtxt_right"></div>
+        </div>
+        <div class="picshowlist">
+          <div class="picshowlist_mid">
+            <div class="picmidleft"> <a href="javascript:void(0)" id="preArrow_B"><span class="sleft"></span></a> </div>
+            <div class="picmidmid">
+              <ul>
+                {% for img in image2 %}
+                <li> <a href="javascript:void(0);"><img src="{{ img.img }}" alt="" bigimg="{{ img.img }}" text="《{{category2.name}}》{{ category2.content }}" /></a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="picmidright"> <a href="javascript:void(0)" id="nextArrow_B"><span class="sright"></span></a> </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--列表展示-->
+      <div class="piclistshow">
+        <ul>
+          {% for img in image2 %}
+          <li>
+            <div class="picimg"><img src="{{ img.img }}" alt="" /></div>
+            <div class="pictxt">
+              <h3>《{{category2.name}}》{{ category2.content }} <span>({{ forloop.counter }}/{{len}})</span></h3>
+            </div>
+          </li>
+          {% endfor %}
+          
+        </ul>
+      </div>
+    </div>
+    <div class="pictext">
+      <ul>
+        游览普陀山一天时间足够了，如果考虑到还要来还愿，那就没必要一次把所有的地方都去到，如果只是单纯的旅游，那就把最重要的地方看看就可以了，普陀山并不是以景色著称的。普陀山上住宿餐饮价格都非常贵，住宿还好说，毕竟供不应求嘛，尤其是节假日，想要提前预定都不一定有房间，餐饮更是离谱，一般都是岛外四五倍的价格。所以建议大家像我们一样住在朱家尖，莲花路是朱家尖镇的中心，比较繁华热闹，住宿餐饮都集中在那里，岛上游玩去庙里体验素斋就可以啦。
+      </ul>
+    </div>
+    <div class="share">
+      <p class="diggit"><a href="/blog/digit/?pid={{ category2.id }}"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ category2.count }}</b>)</p>
+    </div>
+ <div class="nextinfo">
+      <p>上一篇：<a href="/news/life/2018-03-13/804.html">作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</a></p>
+      <p>下一篇：<a href="/news/life/">返回列表</a></p>
+    </div>
+    <div class="news_pl">
+        <h2>文章评论</h2>
+        <div class="gbko"> 
+          <script src="/e/pl/more/?classid=77&amp;id=106&amp;num=20"></script>
+          {% for c in comment %}
+          <div class="fb">
+            <ul>
+              <p class="fbtime"><span>{{ c.time }}</span>{{ c.userId.username }}</p>
+              <p class="fbinfo">{{ c.content }}</p>
+            </ul>
+          </div>
+          {% endfor %}
+          
+          <script>
+      function CheckPl(obj)
+      {
+      if(obj.saytext.value=="")
+      {
+      alert("您没什么话要说吗？");
+      obj.saytext.focus();
+      return false;
+      }
+      return true;
+      }
+      </script>
+          <form action="/blog/comment" method="post" name="saypl" id="saypl" onsubmit="return CheckPl(document.saypl)" target='ifm'>
+            {% csrf_token %}
+
+            <div id="plpost">
+              <p class="saying"><span><a href="/e/pl/?classid=77&amp;id=106">共有<script type="text/javascript" src="/e/public/ViewClick/?classid=77&amp;id=106&amp;down=2"></script>{{ comment_count }}条评论</a></span>来说两句吧...</p>
+              <p class="yname" ><span>用户名:</span>
+                <input name="username" type="text" class="inputText" id="username" value="" size="16">
+              </p>
+              <p class="yzm" ><span>验证码:</span>
+                <input name="pwd" type="text" class="inputText" size="16" id="pwd">
+              </p>
+              <input type="hidden" value={{ image2.0.category.id }} name='pid' id="pid">
+              <input name="nomember" type="hidden" id="nomember" value="1" checked="checked">
+              <textarea name="content" rows="6" id="saytext"></textarea>
+              <input name="imageField"    type="submit" value="提交">
+              <input name="id" type="hidden" id="id" value="106">
+              <input name="classid" type="hidden" id="classid" value="77">
+              <input name="enews" type="hidden" id="enews" value="AddPl">
+              <input name="repid" type="hidden" id="repid" value="0">
+              <input type="hidden" name="ecmsfrom" value="/joke/talk/2018-07-23/106.html">
+              <!-- <a id='ajax_submit' type='hidden'>qiaoqiaotijiao1</a> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</article>
+{% endblock %}

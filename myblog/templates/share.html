@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block link %}
+<script src="{% static 'js/scrollReveal.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<article>
+  <div class="picbox">
+    {% for c1 in category %}
+    <ul>
+      {% for c in c1 %}
+      <li data-scroll-reveal="enter bottom over 1s" ><a href="/blog/infopic/{{ c.id }}"><i><img height="159.27" width="106" src="{{ c.img }}"></i>
+        <div class="picinfo">
+          <h3>{{c.name }}</h3>
+          <span>{{ c.content|slice:"12" }}...</span> </div>
+        </a></li>
+        {% endfor %}
+      
+    </ul>
+    {% endfor %}
+    
+  </div>
+  <div class="pagelist">{{ page_str }}</div>
+</article>
+{% endblock %}

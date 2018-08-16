@@ -1,0 +1,16 @@
+{% load static %}
+<div class="about_me">
+        <h2>关于我</h2>
+        <ul>
+          <i><img src="{{ about.img }}"></i>
+          <p><b>范召萱</b>，{{ about.content|slice:"40" }}</p>
+        </ul>
+      </div>
+      <div class="wdxc">
+        <h2>我的相册</h2>
+        <ul>
+          {% for img in image %}
+          <li><a href="/blog/infopic/{{ img.category.id }}"><img src="{{ img.img }}"></a></li>
+          {% endfor %}
+        </ul>
+      </div>

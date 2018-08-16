@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+<script type="text/javascript" src="{% static 'js/hc-sticky.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<article>
+  <aside class="l_box">
+    {% include 'left1.html' %}
+    {% include 'left2.html' %}
+  </aside>
+  <main class="r_box">
+<div class="gbook">
+    {% for l in ly %}
+      <div class="fb">
+        <ul>
+          <p class="fbtime"><span> {{ l.time }}</span>{{ l.username }}</p>
+          <p class="fbinfo">{{ l.content }}</p>
+        </ul>
+      </div>
+      {% endfor %}
+      <!-- <div class="hf">
+        <ul>
+          <p class="zzhf"><font color="#FF0000">站长回复:</font>感谢捧场啊！看了你的网站，有两个月没更新了哦~</p>
+        </ul>
+      </div> -->
+      
+      <div class="gbox">
+        <form action="/blog/gbook/" method="post" name="form1" id="form1">
+          {% csrf_token %}
+          <p> <strong>来说点儿什么吧...</strong></p>
+          <p><span> 您的姓名:</span>
+            <!-- <input name="name" type="text" id="name"> -->
+            {{ obj.username }}{{ obj.errors.username.0 }}
+            *</p>
+          <p><span>联系邮箱:</span>
+<!--             <input name="email" type="text" id="email">
+ -->            {{ obj.email }}{{ obj.errors.email.0 }}
+            *</p>
+          <p><span class="tnr">留言内容:</span>
+            {{ obj.content }}{{ obj.errors.content.0 }}
+          </p>
+          <p>
+            <input type="submit" name="Submit3" value="提交">
+            <input name="enews" type="hidden" id="enews" value="AddGbook">
+          </p>
+        </form>
+      </div>
+    </div>
+  </main>
+</article>
+{% endblock %}
+
