@@ -15,12 +15,14 @@ class User(models.Model):
 
 class Category(models.Model):
 	name = models.CharField(max_length=32)
+	def __str__(self):
+		return self.name
 
 class Category2(models.Model):
 	name = models.CharField(max_length=32)
 	content = models.CharField(max_length=128,null=True)
 	img = models.CharField(max_length=128,null=True)
-	count = models.IntegerField(default=0)
+	likes = models.IntegerField(default=0)
 
 class Article(models.Model):
 	title = models.CharField(max_length=52)
@@ -29,15 +31,14 @@ class Article(models.Model):
 	updatetime = models.DateField(auto_now=True)
 	category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True)
 	count = models.IntegerField(default=0)
-	img = models.CharField(max_length=128,null=True)
-	like = models.IntegerField(default=0)
+	likes = models.IntegerField(default=0)
 
 class Image(models.Model):
 	img = models.CharField(max_length=256)
 	createtime = models.DateField(auto_now_add=True)
 	category = models.ForeignKey(Category2,on_delete=models.SET_NULL,null=True)
 	count = models.IntegerField(default=0)
-	like = models.IntegerField(default=0)
+	likes = models.IntegerField(default=0)
 
 class Comment(models.Model):
 	article = models.ForeignKey(Article,on_delete=models.CASCADE)

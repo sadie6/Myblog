@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block link %}
+
+<script>
+function myFunction(){
+
+  $("#saypl").submit();
+
+
+
+
+}
+    
+
+
+</script>
+// <script type="text/javascript">
+// $(function(){
+// $("#yl").click(function(){
+//   var text = $("iframe").contents().find("body").text();
+//   var obj = JSON.parse(text);
+//   console.log(obj);
+  
+  
+
+//   // $('#preview').empty();
+//   // var imgtag = document.createElement('img');
+//   // imgtag.src = obj.data;
+
+//   // $('#preview').append(imgtag);
+//   })
+
+// })
+
+// </script>
+{% endblock %}
+
+
+
+
+{% block content %}
+<article>
+  <aside class="l_box">
+  <!-- {% include 'left1.html' %} -->
+  {% include 'left1.html' %}
+  {% include 'left2.html' %}
+
+    
+  </aside>
+  <main class="r_box">
+    
+    <form action="/blog/photo/" method="post" name="saypl" id="saypl"   enctype="multipart/form-data" target="ifm1" >
+            {% csrf_token %}
+            <iframe name="ifm1" id="ifm1" style="display:none;"></iframe>
+            <div id="plpost">
+              
+                <input type='file' name='f' id='f'  onchange="myFunction()">
+              
+              <br>
+              <br>
+
+
+              <!-- <p class="content"><span>文章内容:</span></p>
+              {{ obj.content }}{{ obj.errors.content.0 }}
+              <br> -->
+              <p class="category" ><span>照片类别:</span>
+                <select name="categorylist">
+                  <option disabled selected value="0">default</option>
+                  {% for c in category2 %}
+                  <option value="{{ c.id }}">{{ c.name }}</option>
+                  {% endfor %}
+
+                </select>
+              </p>
+              
+             
+              <!-- <a id='ajax_submit' type='hidden'>qiaoqiaotijiao1</a> -->
+              <input name="imageField"  id="imageField"  type="submit" value="上传" >
+
+            </div>
+          </form>
+          <br>
+          <div id="preview">
+            <!-- <button id="yl" >预览</button> --> 
+
+          </div>
+  </main>
+</article>
+
+
+{% endblock %}

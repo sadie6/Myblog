@@ -26,6 +26,23 @@ $(function(){
       }
     });
   });
+   $("#digit").click(function(){
+    $.ajax({
+      url:'/blog/digit/',
+      type:'GET',
+      data:{'aid':$(this).attr("aid")},
+      traditional:true,
+      headers:{'X-CSRFtoken':$.cookie('csrftoken')},
+      success:function(data){
+        if(data == "ok"){
+          $("#diggnum").text(parseInt($("#diggnum").text())+1);
+        }
+        else{
+          alert(data);
+        }
+      }
+    })
+  })
  
 });
 </script>
@@ -55,11 +72,11 @@ $(function(){
         <div class="tags"><a href="/" target="_blank">个人博客</a> &nbsp; <a href="/" target="_blank">小世界</a></div>
         
         <div class="news_con"> 
-          {{ article3.content }}
+          {{ article3.content|safe }}
         </div>
       </div>
       <div class="share">
-        <p class="diggit"><a href="/blog/digit/?aid={{ article3.id }}"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ article3.like }}</b>)</p>
+        <p class="diggit"><a id="digit" aid={{ article3.id }}> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ article3.likes }}</b>)</p>
       </div>
       <div class="nextinfo">
         <p>上一篇：<a href="/news/life/2018-03-13/804.html">作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</a></p>

@@ -6,6 +6,28 @@
 <link href="{% static 'css/infopic.css' %}" rel="stylesheet">
 <script src="{% static 'js/piccontent.min.js' %}" type="text/javascript"></script>
 <script type="text/javascript" src="{% static 'js/hc-sticky.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+<script type="text/javascript">
+ $(function(){
+  $("#digit").click(function(){
+    $.ajax({
+      url:'/blog/digit/',
+      type:'GET',
+      data:{'pid':$(this).attr("pid")},
+      traditional:true,
+      headers:{'X-CSRFtoken':$.cookie('csrftoken')},
+      success:function(data){
+        if(data == "ok"){
+          $("#diggnum").text(parseInt($("#diggnum").text())+1);
+        }
+        else{
+          alert(data);
+        }
+      }
+    })
+  })
+ })
+</script>
 {% endblock %}
 
 {% block content %}
@@ -89,7 +111,8 @@
       </ul>
     </div>
     <div class="share">
-      <p class="diggit"><a href="/blog/digit/?pid={{ category2.id }}"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ category2.count }}</b>)</p>
+      <!-- <p class="diggit"><a href="/blog/digit/?pid={{ category2.id }}"> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ category2.count }}</b>)</p> -->
+      <p class="diggit"><a id="digit" pid={{ category2.id }}> 很赞哦！ </a>(<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ category2.likes }}</b>)</p>
     </div>
  <div class="nextinfo">
       <p>上一篇：<a href="/news/life/2018-03-13/804.html">作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</a></p>

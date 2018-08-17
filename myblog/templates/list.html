@@ -16,9 +16,9 @@
   </aside>
   <main class="r_box">
     {% for a in article3 %}
-    <li><i><a href="/blog/info/{{ a.id }}"><img src="{{ a.img }}"></a></i>
+    <li><i><a href="/blog/info/{{ a.id }}"><p ><!-- {{ a.createtime }} --></p></a></i>
       <h3><a href="/blog/info/{{ a.id }}">{{ a.title }}</a></h3>
-      <p>{{ a.content | slice:"100" }}</p>
+      <p>{{ a.content |slice:"100" }}</p>
     </li>
     {% endfor %}
     <div class="pagelist">{{ page_str }}</div>

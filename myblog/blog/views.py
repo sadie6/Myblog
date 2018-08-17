@@ -6,6 +6,8 @@ from django.utils.safestring import mark_safe
 from django.http import HttpResponse,HttpResponseRedirect
 from django import forms
 from django.forms import widgets
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 # Create your views here.
@@ -86,6 +88,25 @@ class Mf_ly(forms.ModelForm):
 		widgets = {
 		'content':widgets.Textarea(attrs={'name':'lytext','cols':'60','rows':'12','id':'lytext'})
 		}
+
+
+class MF_article(forms.ModelForm):
+	
+
+	class Meta:
+		model = models.Article
+		fields = ['title','content','category']
+		widgets = {
+		'content':widgets.Textarea(attrs={'name':"content", 'rows':"6", 'id':"saytext"})
+		}
+		labels = {
+		'category':'文章分类','title':'文章标题','content':'文章内容'
+		}
+
+	def __init__(self, *args, **kwargs):
+		super(MF_article, self).__init__(*args, **kwargs)
+		self.fields['content'].required = False
+
 
 
 
@@ -229,23 +250,27 @@ def comment(request):
 def digit(request):
 	aid = request.GET.get('aid',0)
 	pid = request.GET.get('pid',0)
+	
 
 	
 	if int(aid):
 		url = 'info/%s' %aid
 		article_obj = models.Article.objects.filter(id=int(aid)).first()
-		article_obj.like = article_obj.like + 1
+		article_obj.likes = article_obj.likes + 1
 		article_obj.save()		
-		return HttpResponseRedirect(url)
+		# return HttpResponseRedirect(url)
+		return HttpResponse('ok')
 	elif int(pid):
 		url = 'infopic/%s' %pid
 		category2_obj = models.Category2.objects.filter(id=int(pid)).first()
-		category2_obj.count = category2_obj.count + 1
+		category2_obj.likes = category2_obj.likes + 1
 		category2_obj.save()
-		return HttpResponseRedirect(url)
+		# return HttpResponseRedirect(url)
+		return HttpResponse('ok')
 
 	else:
-		return HttpResponseRedirect('index')
+		# return HttpResponseRedirect('index')
+		return HttpResponse('errors')
 
 
 
@@ -262,3 +287,70 @@ def qx(request):
 	category_obj = models.Category.objects.annotate(num_pro=Count('article'))
 	article_obj = models.Article.objects.all().order_by('?')[:6]
 	return render(request,'meigui.html',{'about':about_obj,'image':image_obj,'category':category_obj,'article':article_obj})
+
+
+
+
+
+
+
+
+def write(request):
+	about_obj = models.User.objects.get(id=1)
+	image_obj = models.Image.objects.all().order_by('?')[:6]
+	category_obj = models.Category.objects.annotate(num_pro=Count('article'))
+	article_obj = models.Article.objects.all().order_by('?')[:6]
+	if request.method == 'GET':	
+		obj = MF_article()
+	else:
+		obj = MF_article(request.POST)
+		if obj.is_valid():
+			obj.save()
+
+	return render(request,'write.html',{'about':about_obj,'image':image_obj,'category':category_obj,'article':article_obj,'obj':obj})
+
+
+def photo(request):
+	if request.method == 'GET':
+		about_obj = models.User.objects.get(id=1)
+		image_obj = models.Image.objects.all().order_by('?')[:6]
+		category_obj = models.Category.objects.annotate(num_pro=Count('article'))
+		article_obj = models.Article.objects.all().order_by('?')[:6]
+		category2_obj = models.Category2.objects.all()
+
+		return render(request,'photo.html',{'about':about_obj,'image':image_obj,'category':category_obj,'article':article_obj,'category2':category2_obj})
+	else:
+		cid = request.POST.get('categorylist')
+		img_obj = request.FILES.get('f')
+		if cid:
+			if img_obj:
+				with open('static/images/'+img_obj.name,'wb') as f:
+					for i in img_obj.chunks():
+						f.write(i)
+				models.Image.objects.create(img='/static/images/'+img_obj.name,category_id=int(cid))
+				return HttpResponse("ok")
+			else:
+				return HttpResponse("error")
+
+		else:
+			if img_obj:
+				with open('static/images/'+img_obj.name,'wb') as f:
+					for i in img_obj.chunks():
+						f.write(i)
+				return HttpResponse('/static/images/'+img_obj.name)
+			else:
+				return HttpResponse("error")
+
+@csrf_exempt
+def upload_img(request):
+
+	img_obj = request.FILES.get('imgFile')
+	with open('static/images/'+img_obj.name,'wb') as f:
+		for i in img_obj.chunks():
+			f.write(i)
+	dic = {
+	"error":0,
+	'url':'/static/images/' + img_obj.name,
+	'message':'error',
+	}
+	return HttpResponse(json.dumps(dic))

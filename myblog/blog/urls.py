@@ -11,6 +11,11 @@ urlpatterns = [
     url('infopic/(?P<nid>\d+)',views.infopic),
     url('comment',views.comment),
     url('digit',views.digit),
+    url('write',views.write),
+    url('photo',views.photo),
+    url('upload_img',views.upload_img),
+
+
     url('qx',views.qx),
     
 

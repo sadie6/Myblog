@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+<script type="text/javascript" src="{% static 'js/hc-sticky.js' %}"></script>
+<script type="text/javascript" src="{% static "kindeditor/kindeditor-all.js"  %}"></script>
+<script type="text/javascript">
+  $(function(){
+
+    KindEditor.create('#saytext',{
+      width:'100%',
+      height:'360px',
+      uploadJson:'/blog/upload_img/'
+    });
+  })
+</script>
+{% endblock %}
+
+
+{% block content %}
+<article>
+  <aside class="l_box">
+  <!-- {% include 'left1.html' %} -->
+  {% include 'left2.html' %}
+  {% include 'left3.html' %}
+
+    
+  </aside>
+  <main class="r_box">
+    <form action="/blog/write/" method="post" name="saypl" id="saypl" onsubmit="return CheckPl(document.saypl)" >
+            {% csrf_token %}
+
+            <div id="plpost">
+              <p class="title" ><span>文章标题:</span>
+                {{ obj.title }}{{ obj.errors.title.0 }}
+              </p>
+              <br>
+              <p class="content"><span>文章内容:</span></p>
+              {{ obj.content }}{{ obj.errors.content.0 }}
+              <br>
+              <p class="category" ><span>文章分类:</span>
+                {{ obj.category }}{{ obj.errors.content.0 }}
+              </p>
+              
+             
+              <!-- <a id='ajax_submit' type='hidden'>qiaoqiaotijiao1</a> -->
+              <input name="imageField"    type="submit" value="提交">
+
+            </div>
+          </form>
+  </main>
+</article>
+{% endblock %}
