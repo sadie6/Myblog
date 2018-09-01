@@ -8,6 +8,7 @@ from django import forms
 from django.forms import widgets
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.views.decorators.cache import cache_page
 
 
 # Create your views here.
@@ -109,7 +110,7 @@ class MF_article(forms.ModelForm):
 
 
 
-
+@cache_page(20)
 def index(request):
 	about_obj = models.User.objects.get(id=1)
 	image_obj = models.Image.objects.all().order_by('?')[:6]
@@ -119,7 +120,7 @@ def index(request):
 	# print(obj)
 	return render(request,'index.html',{'about':about_obj,'image':image_obj,'category':category_obj,'article':article_obj,'article2':article_obj2})
 
-
+@cache_page(1000)
 def share(request):
 	current_page = request.GET.get('p',1)
 	category2_obj = models.Category2.objects.all()
@@ -168,7 +169,7 @@ def list(request,nid):
 
 	return render(request,'list.html',{'category':category_obj,'article':article_obj,'article2':article_obj2,'article3':article_obj3,'page_str':page_str})
 
-
+@cache_page(1000)
 def about(request):
 	about_obj = models.User.objects.get(id=1)
 	image_obj = models.Image.objects.all().order_by('?')[:6]
@@ -190,7 +191,7 @@ def gbook(request):
 			mf.save()
 
 	return render(request,'gbook.html',{'about':about_obj,'image':image_obj,'category':category_obj,'article':article_obj,'obj':mf,'ly':ly_obj})
-
+@cache_page(60)
 def info(request,nid):
 	category_obj = models.Category.objects.annotate(num_pro=Count('article'))
 	article_obj = models.Article.objects.all().order_by('?')[:6]
@@ -294,7 +295,7 @@ def qx(request):
 
 
 
-
+@cache_page(1000)
 def write(request):
 	about_obj = models.User.objects.get(id=1)
 	image_obj = models.Image.objects.all().order_by('?')[:6]
